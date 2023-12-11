@@ -9,7 +9,11 @@ const io = new Server(server, { cors: "http://localhost:3000/" });
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
-app.use(cors({ origin: "http://localhost:3000/" }));
+const isDev = app.settings.env === "development";
+const url = isDev
+  ? "http://localhost:3000/"
+  : "https://sketchbook-three-dusky.vercel.app/";
+app.use(cors({ origin: url }));
 io.on("connection", (socket) => {
   console.log("server connected");
   socket.on("beginPath", (arg) => {
